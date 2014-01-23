@@ -40,6 +40,7 @@ done
 if [ -z "$1" ]
   then
     minified=jquery.jvectormap.min.js
+    minified_tmp=jquery.jvectormap.min.js_tmp
   else
     minified=$1
 fi
@@ -49,6 +50,10 @@ if [ -a $minified ]
     rm $minified
 fi
 
-cat ${files[*]} >> $minified
+cat ${files[*]} >> $minified_tmp
 
-uglifyjs --overwrite $minified
+uglifyjs  $minified_tmp > $minified
+
+rm $minified_tmp
+
+exit $?
