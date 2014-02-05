@@ -9,9 +9,14 @@ files=( \
   lib/abstract-shape-element.js \
   lib/svg-element.js \
   lib/svg-group-element.js \
+  lib/svg-defs-element.js \
+  lib/svg-clipPath-element.js \
   lib/svg-canvas-element.js \
   lib/svg-shape-element.js \
   lib/svg-path-element.js \
+  lib/svg-polygon-element.js \
+  lib/svg-use-element.js \
+  lib/svg-line-element.js \
   lib/svg-circle-element.js \
   lib/vml-element.js \
   lib/vml-group-element.js \
