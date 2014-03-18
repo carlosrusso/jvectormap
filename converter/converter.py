@@ -13,6 +13,9 @@ import json
 import shapely.geometry
 import codecs
 
+import shapely
+import shapely.wkb
+
 class Map:
   def __init__(self, name, language):
     self.paths = {}
