@@ -107,10 +107,12 @@ class Converter:
 
     # load codes from external tsv file if present or geodata file otherwise
     codes = {}
+    names = {}
     if sourceConfig.get('codes_file'):
       for line in codecs.open(sourceConfig.get('codes_file'), 'r', "utf-8"):
         row = map(lambda s: s.strip(), line.split('\t'))
         codes[row[1]] = row[0]
+        names[row[1]] = row[2] # Name to use for identification of the feature
     else:
       nextCode = 0
       for feature in layer:
@@ -120,6 +122,7 @@ class Converter:
           nextCode += 1
         name = feature.GetFieldAsString(sourceConfig.get('country_name_index')).decode(sourceConfig.get('input_file_encoding'))
         codes[name] = code
+        names[name] = name
       layer.ResetReading()
 
     # load features
@@ -137,7 +140,7 @@ class Converter:
         if shapelyGeometry:
           name = feature.GetFieldAsString(sourceConfig.get('country_name_index')).decode(sourceConfig.get('input_file_encoding'))
           code = codes[name]
-          self.features[code] = {"geometry": shapelyGeometry, "name": name, "code": code}
+          self.features[code] = {"geometry": shapelyGeometry, "name": names[name], "code": code}
       else:
         raise Exception, "Wrong geometry type: "+geometryType
 
@@ -188,11 +191,15 @@ class Converter:
 
   def renderMapInset(self, codes, left, top, width):
     envelope = []
+
+    #print codes, left, top, width
+
     for code in codes:
       envelope.append( self.features[code]['geometry'].envelope )
+      #print code, self.features[code]['geometry']
 
     bbox = shapely.geometry.MultiPolygon( envelope ).bounds
-
+    #print 'BBox=', bbox, 'envelope=', envelope
     scale = (bbox[2]-bbox[0]) / width
 
     # generate SVG paths
