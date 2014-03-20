@@ -42,23 +42,14 @@ while [ $counter -lt ${#files[@]} ]; do
   let counter=counter+1
 done
 
-if [ -z "$1" ]
+uncompressed=jquery.jvectormap.js
+if [ -a $uncompressed ]
   then
-    minified=jquery.jvectormap.min.js
-    minified_tmp=jquery.jvectormap.min.js_tmp
-  else
-    minified=$1
+    rm $uncompressed
 fi
+cat ${files[*]} >> $uncompressed
+uglifyjs2 $uncompressed -o $minified
 
-if [ -a $minified ]
-  then
-    rm $minified
-fi
 
-cat ${files[*]} >> $minified_tmp
-
-uglifyjs  $minified_tmp > $minified
-
-rm $minified_tmp
 
 exit $?
