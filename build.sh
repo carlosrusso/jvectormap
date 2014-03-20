@@ -43,6 +43,7 @@ while [ $counter -lt ${#files[@]} ]; do
 done
 
 uncompressed=jquery.jvectormap.js
+minified=jquery.jvectormap.min.js
 if [ -a $uncompressed ]
   then
     rm $uncompressed
